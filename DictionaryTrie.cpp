@@ -1,8 +1,7 @@
 #include "DictionaryTrie.hpp"
+#include <cstring>
 /* Create a new Dictionary that uses a Trie back end */
-DictionaryTrie::DictionaryTrie()
-{
-}
+DictionaryTrie::DictionaryTrie() : root(nullptr) {}
 
 /** 
  * Insert a word with its frequency into the dictionary.
@@ -12,14 +11,16 @@ DictionaryTrie::DictionaryTrie()
  * when you want to test a certain case, but don't want to
  * write out a specific word 300 times.
  */
-bool DictionaryTrie::insert(std::string word, unsigned int freq)
-{
+bool DictionaryTrie::insert(std::string word, unsigned int freq) {
+  if(!this->root) {
+    this->root = new DictionaryTrieNode(word[0]);
+
+  }
 }
 
 
 /* Return true if word is in the dictionary, and false otherwise */
-bool DictionaryTrie::find(std::string word) const
-{
+bool DictionaryTrie::find(std::string word) const {
 }
 
 
@@ -34,8 +35,8 @@ bool DictionaryTrie::find(std::string word) const
  * is a word (and is among the num_completions most frequent completions
  * of the prefix)
  */
-std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, unsigned int num_completions)
-{
+std::vector<std::string> DictionaryTrie::predictCompletions(
+                             std::string prefix, unsigned int num_completions) {
 }
 
 /* Return up to num_completions of the most frequent completions
@@ -48,11 +49,23 @@ std::vector<std::string> DictionaryTrie::predictCompletions(std::string prefix, 
  * is a word (and is among the num_completions most frequent completions
  * of the pattern)
  */
-std::vector<string> DictionaryTrie::predictUnderscore(std::string pattern, unsigned int num_completions)
-{
+std::vector<string> DictionaryTrie::predictUnderscore(
+                            std::string pattern, unsigned int num_completions) {
 }
 
 /* Destructor */
-DictionaryTrie::~DictionaryTrie()
-{
+DictionaryTrie::~DictionaryTrie() {
+  this->deleteAll(this->root);
+  this->root = nullptr;
+}
+
+void DictionaryTrie::deleteAll(DictionaryTrieNode* node) {
+  if(!node)
+    return;
+
+  this->deleteAll(node->getLeft());
+  this->deleteAll(node->nextDown());
+  this->deleteAll(node->getRight());
+
+  delete node;
 }
