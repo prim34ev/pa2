@@ -162,13 +162,15 @@ DictionaryTrieNode* DictionaryTrie::traverseTo(
 void DictionaryTrie::findCompletions(
                         DictionaryTrieNode* node, std::string curSuffix) {
   if(!node) return;
+
   this->findCompletions(node->getLeft(), curSuffix);
-  this->findCompletions(node->nextDown(), curSuffix + node->getChar());
-  this->findCompletions(node->getRight(), curSuffix);
 
   if(node->isEOS()) {
     this->updateQueue(curSuffix + node->getChar(), node->getFrequency());
   }
+
+  this->findCompletions(node->nextDown(), curSuffix + node->getChar());
+  this->findCompletions(node->getRight(), curSuffix);
 }
 
 void DictionaryTrie::updateQueue(std::string suffix, unsigned int freq) {
