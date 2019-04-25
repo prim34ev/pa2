@@ -1,3 +1,13 @@
+/*
+ * Filename: autocomplete.cpp
+ * Author: Ajay Nair
+ * Email: ajnair@ucsd.edu
+ * Date: April 25, 2019
+ *
+ * Program that will allow the user to fill a DictionaryTrie with the contents
+ * of a dictionary, and then run a basic autocomplete search using the stored
+ * frequency data and a user-given pattern.
+ */
 #include "util.hpp"
 #include "DictionaryTrie.hpp"
 #include <vector>
@@ -59,7 +69,6 @@ void interact(DictionaryTrie* dict) {
 int main(int argc, char** argv) {
   if(argc != 2) {
     cout << "This program needs exactly one argument!" << endl;
-
     return 1;
   }
 

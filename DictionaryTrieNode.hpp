@@ -1,3 +1,13 @@
+/*
+ * Filename: DictionaryTrieNode.hpp
+ * Author: Ajay Nair
+ * Email: ajnair@ucsd.edu
+ * Date: April 24, 2019
+ *
+ * Class declaration for DictionaryTrieNode, the nodes to be used when building
+ * DictionaryTrie.
+ */
+
 #ifndef DICTIONARY_TRIE_NODE_HPP
 #define DICTIONARY_TRIE_NODE_HPP
 

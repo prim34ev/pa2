@@ -1,3 +1,12 @@
+/*
+ * Filename: DictionaryTrieNode.cpp
+ * Author: Ajay Nair
+ * Email: ajnair@ucsd.edu
+ * Date: April 25, 2019
+ *
+ * Definitions for all DictionaryTrieNode member functions, including its
+ * constructor.
+ */
 #include "DictionaryTrieNode.hpp"
 
 DictionaryTrieNode::DictionaryTrieNode(char data): data(data), freq(0),

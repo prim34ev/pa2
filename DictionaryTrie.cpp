@@ -1,3 +1,12 @@
+/*
+ * Filename: DictionaryTrie.cpp
+ * Author: Ajay Nair
+ * Email: ajnair@ucsd.edu
+ * Date: April 24, 2019
+ *
+ * Implementation of a ternary search trie to store the contents of a
+ * dictionary.
+ */
 #include "DictionaryTrie.hpp"
 
 /* Create a new Dictionary that uses a Trie back end */

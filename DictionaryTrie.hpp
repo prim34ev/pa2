@@ -1,6 +1,10 @@
 /**
  *  CSE 100 PA2 C++ Autocomplete
- *  Authors: Jor-el Briones, Christine Alvarado
+ *  Authors: Jor-el Briones, Christine Alvarado, and Ajay Nair
+ *  Email: ajnair@ucsd.edu
+ *  Date: April 24, 2019
+ *
+ *  Class declaration for DictionaryTrie
  */
 
 #ifndef DICTIONARY_TRIE_HPP
