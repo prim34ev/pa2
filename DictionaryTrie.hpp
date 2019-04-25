@@ -11,6 +11,23 @@
 #include <string>
 #include <queue>
 using namespace std;
+
+struct SuffixData {
+  std::string suffix;
+  unsigned int freq;
+
+  SuffixData(std::string suffix, unsigned int freq) : suffix(suffix),
+                                                        freq(freq) {}
+};
+
+struct CompFreq {
+  bool operator() (const SuffixData & s1, const SuffixData & s2) {
+    return (s1.freq != s2.freq) ? s1.freq > s2.freq : s1.suffix < s2.suffix;
+  }
+};
+
+typedef priority_queue<SuffixData, vector<SuffixData>, CompFreq> suffix_queue;
+
 /**
  *  The class for a dictionary ADT, implemented as a trie
  *  You may implement this class as either a mulit-way trie
@@ -67,10 +84,26 @@ class DictionaryTrie {
 
   private:
     DictionaryTrieNode* root;
+    bool found;
+    suffix_queue completions;
+    unsigned int numPredict;
+
 
     void deleteAll(DictionaryTrieNode* node);
+
     DictionaryTrieNode* insert(std::string word, unsigned int freq,
-                               DictionaryTrieNode* curNode, unsigned int i); 
+                               DictionaryTrieNode* curNode, unsigned int i);
+
+    bool find(std::string word, DictionaryTrieNode* curNode, 
+                                unsigned int i) const;
+
+    DictionaryTrieNode* traverseTo(std::string word,
+                                   DictionaryTrieNode* curNode,
+                                   unsigned int i) const;
+
+    void findCompletions(DictionaryTrieNode* node, std::string curSuffix);
+    
+    void updateQueue(std::string suffix, unsigned int freq);
 };
 
 #endif // DICTIONARY_TRIE_H

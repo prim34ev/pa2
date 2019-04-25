@@ -9,9 +9,9 @@ LDFLAGS=-g
 
 all: autocomplete benchtrie firewall hashStats
 
-autocomplete: util.o DictionaryTrie.o
+autocomplete: util.o DictionaryTrieNode.o DictionaryTrie.o
 
-benchtrie: util.o DictionaryTrie.o
+benchtrie: util.o DictionaryTrieNode.o DictionaryTrie.o
 
 firewall: BloomFilter.o
 
@@ -20,6 +20,8 @@ hashStats: BloomFilter.o
 test: util.o DictionaryTrie.o
 
 DictionaryTrie.o: DictionaryTrie.hpp
+
+DictionaryTrieNode.o: DictionaryTrieNode.hpp
 
 BloomFilter.o: BloomFilter.hpp
 

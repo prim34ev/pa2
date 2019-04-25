@@ -1,7 +1,9 @@
 #include "DictionaryTrie.hpp"
-#include <cstring>
+
 /* Create a new Dictionary that uses a Trie back end */
-DictionaryTrie::DictionaryTrie() : root(nullptr) {}
+DictionaryTrie::DictionaryTrie(): root(nullptr), found(false),
+                                  completions(suffix_queue(CompFreq())),
+                                  numPredict(0) {}
 
 /** 
  * Insert a word with its frequency into the dictionary.
@@ -12,15 +14,18 @@ DictionaryTrie::DictionaryTrie() : root(nullptr) {}
  * write out a specific word 300 times.
  */
 bool DictionaryTrie::insert(std::string word, unsigned int freq) {
-  if(!this->root) {
-    this->root = new DictionaryTrieNode(word[0]);
+  if(word.empty() || freq == 0) return false;
 
-  }
+  this->root = this->insert(word, freq, this->root, 0);
+  return !this->found;
 }
 
 
 /* Return true if word is in the dictionary, and false otherwise */
 bool DictionaryTrie::find(std::string word) const {
+  if(word.empty()) return false;
+
+  return this->find(word, this->root, 0);
 }
 
 
@@ -37,6 +42,24 @@ bool DictionaryTrie::find(std::string word) const {
  */
 std::vector<std::string> DictionaryTrie::predictCompletions(
                              std::string prefix, unsigned int num_completions) {
+  DictionaryTrieNode* prefixEnd;
+  if(!(prefixEnd = this->traverseTo(prefix, this->root, 0)) ||
+                                                num_completions == 0) return {};
+
+  this->numPredict = num_completions;
+  if(prefixEnd->isEOS()) {
+    this->updateQueue("", prefixEnd->getFrequency());
+  }
+
+  this->findCompletions(prefixEnd->nextDown(), "");
+
+  std::vector<std::string> fullCompletions;
+  while(!this->completions.empty()) {
+    fullCompletions.insert(fullCompletions.begin(),
+                           prefix + this->completions.top().suffix);
+    this->completions.pop();
+  }
+  return fullCompletions;
 }
 
 /* Return up to num_completions of the most frequent completions
@@ -51,6 +74,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(
  */
 std::vector<string> DictionaryTrie::predictUnderscore(
                             std::string pattern, unsigned int num_completions) {
+  return {};
 }
 
 /* Destructor */
@@ -68,4 +92,88 @@ void DictionaryTrie::deleteAll(DictionaryTrieNode* node) {
   this->deleteAll(node->getRight());
 
   delete node;
+}
+
+DictionaryTrieNode* DictionaryTrie::insert(
+                                  std::string word, unsigned int freq,
+                                  DictionaryTrieNode* curNode, unsigned int i) {
+  if(!curNode) {
+    curNode = new DictionaryTrieNode(word[i]);
+  }
+
+  if(word[i] < curNode->getChar()) {
+    curNode->setLeft(this->insert(word, freq, curNode->getLeft(), i));
+  }
+  else if(word[i] > curNode->getChar()) {
+    curNode->setRight(this->insert(word, freq, curNode->getRight(), i));
+  }
+  else if(i + 1 < word.length()) {
+    curNode->setNext(this->insert(word, freq, curNode->nextDown(), i + 1));
+  }
+  else if(curNode->isEOS()) {
+    this->found = true;
+  }
+  else {
+    this->found = false;
+    curNode->makeEOS(freq);
+  }
+
+  return curNode;
+}
+
+bool DictionaryTrie::find(
+          std::string word, DictionaryTrieNode* curNode, unsigned int i) const {
+  if(!curNode) return false;
+
+  if(word[i] < curNode->getChar()) {
+    return this->find(word, curNode->getLeft(), i);
+  }
+
+  if(word[i] > curNode->getChar()) {
+    return this->find(word, curNode->getRight(), i);
+  }
+
+  if(i + 1 < word.length()) {
+    return this->find(word, curNode->nextDown(), i + 1);
+  }
+
+  return curNode->isEOS();
+}
+
+DictionaryTrieNode* DictionaryTrie::traverseTo(
+          std::string word, DictionaryTrieNode* curNode, unsigned int i) const {
+  if(!curNode) return nullptr;
+
+  if(word[i] < curNode->getChar()) {
+    return this->traverseTo(word, curNode->getLeft(), i);
+  }
+
+  if(word[i] > curNode->getChar()) {
+    return this->traverseTo(word, curNode->getRight(), i);
+  }
+
+  if(i + 1 < word.length()) {
+    return this->traverseTo(word, curNode->nextDown(), i + 1);
+  }
+
+  return curNode;
+}
+
+void DictionaryTrie::findCompletions(
+                        DictionaryTrieNode* node, std::string curSuffix) {
+  if(!node) return;
+  this->findCompletions(node->getLeft(), curSuffix);
+  this->findCompletions(node->nextDown(), curSuffix + node->getChar());
+  this->findCompletions(node->getRight(), curSuffix);
+
+  if(node->isEOS()) {
+    this->updateQueue(curSuffix + node->getChar(), node->getFrequency());
+  }
+}
+
+void DictionaryTrie::updateQueue(std::string suffix, unsigned int freq) {
+  this->completions.push(SuffixData(suffix, freq));
+  if(this->completions.size() > this->numPredict) {
+    this->completions.pop();
+  }
 }

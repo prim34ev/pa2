@@ -1,11 +1,8 @@
 #include "DictionaryTrieNode.hpp"
 
-DictionaryTrieNode::DictionaryTrieNode(
-                                   char data, unsigned int freq) : data(data),
-                                                                   freq(freq),
-                                                                left(nullptr),
-                                                                down(nullptr),
-                                                               right(nullptr) {}
+DictionaryTrieNode::DictionaryTrieNode(char data): data(data), freq(0),
+                                                   left(nullptr), down(nullptr),
+                                                   right(nullptr) {}
 
 char DictionaryTrieNode::getChar() const {
   return this->data;
@@ -15,7 +12,7 @@ bool DictionaryTrieNode::isEOS() const {
   return this->freq > 0;
 }
 
-unsigned int getFrequency() const {
+unsigned int DictionaryTrieNode::getFrequency() const {
   return this->freq;
 }
 
@@ -28,7 +25,7 @@ DictionaryTrieNode* DictionaryTrieNode::getRight() const {
 }
 
 DictionaryTrieNode* DictionaryTrieNode::nextDown() const {
-  return this->next;
+  return this->down;
 }
 
 void DictionaryTrieNode::setLeft(DictionaryTrieNode* left) {

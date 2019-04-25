@@ -4,15 +4,8 @@
 using namespace std;
 
 class DictionaryTrieNode {
-  private:
-    char data;
-    unsigned int freq;
-    DictionaryTrieNode* left;
-    DictionaryTrieNode* down;
-    DictionaryTrieNode* right;
-
   public:
-    DictionaryTrieNode(char data, unsigned int freq = 0);
+    DictionaryTrieNode(char data);
 
     char getChar() const;
     bool isEOS() const;
@@ -25,6 +18,13 @@ class DictionaryTrieNode {
     void setRight(DictionaryTrieNode* right);
     void setNext(DictionaryTrieNode* down);
     void makeEOS(unsigned int freq);
+
+  private:
+    char data;
+    unsigned int freq;
+    DictionaryTrieNode* left;
+    DictionaryTrieNode* down;
+    DictionaryTrieNode* right;
 };
 
 #endif // DICTIONARY_TRIE_NODE_H
