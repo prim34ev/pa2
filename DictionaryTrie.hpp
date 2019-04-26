@@ -88,7 +88,6 @@ class DictionaryTrie {
 
   private:
     DictionaryTrieNode* root;
-    bool found;
     suffix_queue completions;
     unsigned int numPredict;
 
@@ -96,7 +95,8 @@ class DictionaryTrie {
     void deleteAll(DictionaryTrieNode* node);
 
     DictionaryTrieNode* insert(std::string word, unsigned int freq,
-                               DictionaryTrieNode* curNode, unsigned int i);
+                               DictionaryTrieNode* curNode, unsigned int i,
+                               bool* found);
 
     bool find(std::string word, DictionaryTrieNode* curNode, 
                                 unsigned int i) const;

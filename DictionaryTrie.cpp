@@ -8,13 +8,14 @@
  * dictionary.
  */
 #include "DictionaryTrie.hpp"
+#include <iostream>
 
 /* Create a new Dictionary that uses a Trie back end */
-DictionaryTrie::DictionaryTrie(): root(nullptr), found(false),
+DictionaryTrie::DictionaryTrie(): root(nullptr),
                                   completions(suffix_queue(CompFreq())),
                                   numPredict(0) {}
 
-/** 
+/**
  * Insert a word with its frequency into the dictionary.
  * Return true if the word was inserted, and false if it
  * was not (i.e. it was already in the dictionary or it was
@@ -25,8 +26,10 @@ DictionaryTrie::DictionaryTrie(): root(nullptr), found(false),
 bool DictionaryTrie::insert(std::string word, unsigned int freq) {
   if(word.empty() || freq == 0) return false;
 
-  this->root = this->insert(word, freq, this->root, 0);
-  return !this->found;
+  bool found = false;
+
+  this->root = this->insert(word, freq, this->root, 0, &found);
+  return !found;
 }
 
 
@@ -38,7 +41,7 @@ bool DictionaryTrie::find(std::string word) const {
 }
 
 
-/* 
+/*
  * Return up to num_completions of the most frequent completions
  * of the prefix, such that the completions are words in the dictionary.
  * These completions should be listed from most frequent to least.
@@ -93,37 +96,43 @@ DictionaryTrie::~DictionaryTrie() {
 }
 
 void DictionaryTrie::deleteAll(DictionaryTrieNode* node) {
-  if(!node)
-    return;
+  if(!node) return;
 
   this->deleteAll(node->getLeft());
+  node->setLeft(nullptr);
+
   this->deleteAll(node->nextDown());
+  node->setNext(nullptr);
+
   this->deleteAll(node->getRight());
+  node->setRight(nullptr);
 
   delete node;
 }
 
 DictionaryTrieNode* DictionaryTrie::insert(
                                   std::string word, unsigned int freq,
-                                  DictionaryTrieNode* curNode, unsigned int i) {
+                                  DictionaryTrieNode* curNode, unsigned int i,
+                                  bool* found) {
   if(!curNode) {
     curNode = new DictionaryTrieNode(word[i]);
   }
 
   if(word[i] < curNode->getChar()) {
-    curNode->setLeft(this->insert(word, freq, curNode->getLeft(), i));
+    curNode->setLeft(this->insert(word, freq, curNode->getLeft(), i, found));
   }
   else if(word[i] > curNode->getChar()) {
-    curNode->setRight(this->insert(word, freq, curNode->getRight(), i));
+    curNode->setRight(this->insert(word, freq, curNode->getRight(), i, found));
   }
   else if(i + 1 < word.length()) {
-    curNode->setNext(this->insert(word, freq, curNode->nextDown(), i + 1));
+    curNode->setNext(this->insert(word, freq, curNode->nextDown(), i + 1, 
+                                  found));
   }
   else if(curNode->isEOS()) {
-    this->found = true;
+    *found = true;
   }
   else {
-    this->found = false;
+    *found = false;
     curNode->makeEOS(freq);
   }
 
@@ -169,7 +178,7 @@ DictionaryTrieNode* DictionaryTrie::traverseTo(
 }
 
 void DictionaryTrie::findCompletions(
-                        DictionaryTrieNode* node, std::string curSuffix) {
+                              DictionaryTrieNode* node, std::string curSuffix) {
   if(!node) return;
 
   this->findCompletions(node->getLeft(), curSuffix);

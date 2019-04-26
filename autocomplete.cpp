@@ -51,8 +51,6 @@ void interact(DictionaryTrie* dict) {
     getline(cin, input);
     stringstream(input) >> searchAgain;
   } while(searchAgain == 'y');
-
-  delete dict;
 }
 /**
  * IMPORTANT! You should use the following lines of code to match the correct output:
@@ -72,7 +70,9 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  interact(generateDict(*(argv + 1)));
+  DictionaryTrie* dict = generateDict(*(argv + 1));
+  interact(dict);
 
+  delete dict;
   return 0;
 }
