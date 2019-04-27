@@ -98,12 +98,8 @@ class DictionaryTrie {
                                DictionaryTrieNode* curNode, unsigned int i,
                                bool* found);
 
-    bool find(std::string word, DictionaryTrieNode* curNode, 
-                                unsigned int i) const;
-
-    DictionaryTrieNode* traverseTo(std::string word,
-                                   DictionaryTrieNode* curNode,
-                                   unsigned int i) const;
+    DictionaryTrieNode* find(std::string word, DictionaryTrieNode* curNode, 
+                             unsigned int i) const;
 
     void findCompletions(DictionaryTrieNode* node, std::string curSuffix);
     

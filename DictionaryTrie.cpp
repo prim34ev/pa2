@@ -54,7 +54,7 @@ bool DictionaryTrie::find(std::string word) const {
 std::vector<std::string> DictionaryTrie::predictCompletions(
                              std::string prefix, unsigned int num_completions) {
   DictionaryTrieNode* prefixEnd;
-  if(!(prefixEnd = this->traverseTo(prefix, this->root, 0)) ||
+  if(!(prefixEnd = this->find(prefix, this->root, 0)) ||
                                                 num_completions == 0) return {};
 
   this->numPredict = num_completions;
@@ -138,9 +138,9 @@ DictionaryTrieNode* DictionaryTrie::insert(
   return curNode;
 }
 
-bool DictionaryTrie::find(
+DictionaryTrieNode* DictionaryTrie::find(
           std::string word, DictionaryTrieNode* curNode, unsigned int i) const {
-  if(!curNode) return false;
+  if(!curNode) return nullptr;
 
   if(word[i] < curNode->getChar()) {
     return this->find(word, curNode->getLeft(), i);
@@ -152,25 +152,6 @@ bool DictionaryTrie::find(
 
   if(i + 1 < word.length()) {
     return this->find(word, curNode->nextDown(), i + 1);
-  }
-
-  return curNode->isEOS();
-}
-
-DictionaryTrieNode* DictionaryTrie::traverseTo(
-          std::string word, DictionaryTrieNode* curNode, unsigned int i) const {
-  if(!curNode) return nullptr;
-
-  if(word[i] < curNode->getChar()) {
-    return this->traverseTo(word, curNode->getLeft(), i);
-  }
-
-  if(word[i] > curNode->getChar()) {
-    return this->traverseTo(word, curNode->getRight(), i);
-  }
-
-  if(i + 1 < word.length()) {
-    return this->traverseTo(word, curNode->nextDown(), i + 1);
   }
 
   return curNode;
