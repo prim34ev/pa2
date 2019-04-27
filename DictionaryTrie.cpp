@@ -8,7 +8,6 @@
  * dictionary.
  */
 #include "DictionaryTrie.hpp"
-#include <iostream>
 
 /* Create a new Dictionary that uses a Trie back end */
 DictionaryTrie::DictionaryTrie(): root(nullptr),
