@@ -14,7 +14,6 @@
 #include <vector>
 #include <string>
 #include <queue>
-using namespace std;
 
 struct SuffixData {
   std::string suffix;
@@ -30,7 +29,8 @@ struct CompFreq {
   }
 };
 
-typedef priority_queue<SuffixData, vector<SuffixData>, CompFreq> suffix_queue;
+typedef std::priority_queue<SuffixData, std::vector<SuffixData>, CompFreq>
+                                                                   suffix_queue;
 
 /**
  *  The class for a dictionary ADT, implemented as a trie

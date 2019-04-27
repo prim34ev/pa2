@@ -7,11 +7,8 @@
  * Class declaration for DictionaryTrieNode, the nodes to be used when building
  * DictionaryTrie.
  */
-
 #ifndef DICTIONARY_TRIE_NODE_HPP
 #define DICTIONARY_TRIE_NODE_HPP
-
-using namespace std;
 
 class DictionaryTrieNode {
   public:

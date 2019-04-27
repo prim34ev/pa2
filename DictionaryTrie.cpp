@@ -84,7 +84,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(
  * is a word (and is among the num_completions most frequent completions
  * of the pattern)
  */
-std::vector<string> DictionaryTrie::predictUnderscore(
+std::vector<std::string> DictionaryTrie::predictUnderscore(
                             std::string pattern, unsigned int num_completions) {
   return {};
 }
