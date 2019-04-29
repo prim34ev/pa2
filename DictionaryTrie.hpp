@@ -14,23 +14,19 @@
 #include <vector>
 #include <string>
 #include <queue>
-
-struct SuffixData {
-  std::string suffix;
-  unsigned int freq;
-
-  SuffixData(std::string suffix, unsigned int freq) : suffix(suffix),
-                                                        freq(freq) {}
-};
+#include <utility>
 
 struct CompFreq {
-  bool operator() (const SuffixData & s1, const SuffixData & s2) {
-    return (s1.freq != s2.freq) ? s1.freq > s2.freq : s1.suffix < s2.suffix;
+  bool operator() (const std::pair<std::string, unsigned int> & p1, 
+                   const std::pair<std::string, unsigned int> & p2) {
+    return (p1.second != p2.second) ? p1.second > p2.second :
+                                                            p1.first < p2.first;
   }
 };
 
-typedef std::priority_queue<SuffixData, std::vector<SuffixData>, CompFreq>
-                                                                   suffix_queue;
+typedef std::priority_queue<std::pair<std::string, unsigned int>,
+                            std::vector<std::pair<std::string, unsigned int>>,
+                            CompFreq> suffix_queue;
 
 /**
  *  The class for a dictionary ADT, implemented as a trie

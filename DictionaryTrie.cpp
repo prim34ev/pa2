@@ -67,7 +67,7 @@ std::vector<std::string> DictionaryTrie::predictCompletions(
   std::vector<std::string> fullCompletions;
   while(!this->completions.empty()) {
     fullCompletions.insert(fullCompletions.begin(),
-                           prefix + this->completions.top().suffix);
+                           prefix + this->completions.top().first);
     this->completions.pop();
   }
   return fullCompletions;
@@ -172,7 +172,7 @@ void DictionaryTrie::findCompletions(
 }
 
 void DictionaryTrie::updateQueue(std::string suffix, unsigned int freq) {
-  this->completions.push(SuffixData(suffix, freq));
+  this->completions.push(std::make_pair(suffix, freq));
   if(this->completions.size() > this->numPredict) {
     this->completions.pop();
   }
