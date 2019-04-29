@@ -127,11 +127,7 @@ DictionaryTrieNode* DictionaryTrie::insert(
     curNode->setNext(this->insert(word, freq, curNode->nextDown(), i + 1, 
                                   found));
   }
-  else if(curNode->isEOS()) {
-    *found = true;
-  }
-  else {
-    *found = false;
+  else if(!(*found = curNode->isEOS())) {
     curNode->makeEOS(freq);
   }
 

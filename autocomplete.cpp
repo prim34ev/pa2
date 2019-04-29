@@ -41,7 +41,7 @@ void interact(DictionaryTrie* dict) {
     getline(cin, prefix);
     cout << "Enter a number of completions:" << endl;
     getline(cin, input);
-    stringstream(input) >> numCompletions;
+    istringstream(input) >> numCompletions;
     completions = dict->predictCompletions(prefix, numCompletions);
     for(unsigned int i = 0; i < completions.size(); i++) {
       cout << completions[i] << endl;
@@ -49,7 +49,7 @@ void interact(DictionaryTrie* dict) {
     completions.clear();
     cout << "Continue? (y/n)" << endl;
     getline(cin, input);
-    stringstream(input) >> searchAgain;
+    istringstream(input) >> searchAgain;
   } while(searchAgain == 'y');
 }
 /**
