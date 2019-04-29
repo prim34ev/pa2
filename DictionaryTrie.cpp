@@ -36,7 +36,9 @@ bool DictionaryTrie::insert(std::string word, unsigned int freq) {
 bool DictionaryTrie::find(std::string word) const {
   if(word.empty()) return false;
 
-  return this->find(word, this->root, 0);
+  DictionaryTrieNode* found;
+
+  return (found = this->find(word, this->root, 0)) && found->isEOS();
 }
 
 
