@@ -20,7 +20,7 @@ struct CompFreq {
   bool operator() (const std::pair<std::string, unsigned int> & p1, 
                    const std::pair<std::string, unsigned int> & p2) {
     return (p1.second != p2.second) ? p1.second > p2.second :
-                                                            p1.first < p2.first;
+                                      p1.first < p2.first;
   }
 };
 
