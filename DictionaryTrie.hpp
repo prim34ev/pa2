@@ -87,18 +87,13 @@ class DictionaryTrie {
     suffix_queue completions;
     unsigned int numPredict;
 
-
     void deleteAll(DictionaryTrieNode* node);
-
     DictionaryTrieNode* insert(std::string word, unsigned int freq,
                                DictionaryTrieNode* curNode, unsigned int i,
                                bool* found);
-
     DictionaryTrieNode* find(std::string word, DictionaryTrieNode* curNode, 
                              unsigned int i) const;
-
     void findCompletions(DictionaryTrieNode* node, std::string curSuffix);
-    
     void updateQueue(std::string suffix, unsigned int freq);
 };
 
