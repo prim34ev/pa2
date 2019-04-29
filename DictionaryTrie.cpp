@@ -172,7 +172,7 @@ void DictionaryTrie::findCompletions(
 }
 
 void DictionaryTrie::updateQueue(std::string suffix, unsigned int freq) {
-  this->completions.push(std::make_pair(suffix, freq));
+  this->completions.push(std::pair<std::string, unsigned int>(suffix, freq));
   if(this->completions.size() > this->numPredict) {
     this->completions.pop();
   }
