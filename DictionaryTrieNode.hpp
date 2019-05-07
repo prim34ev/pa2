@@ -17,6 +17,7 @@ class DictionaryTrieNode {
     char getChar() const;
     bool isEOS() const;
     unsigned int getFrequency() const;
+    unsigned int getMaxFrequency() const;
     DictionaryTrieNode* getLeft() const;
     DictionaryTrieNode* getRight() const;
     DictionaryTrieNode* nextDown() const;
@@ -25,10 +26,12 @@ class DictionaryTrieNode {
     void setRight(DictionaryTrieNode* right);
     void setNext(DictionaryTrieNode* down);
     void makeEOS(unsigned int freq);
+    void setMaxFrequency(unsigned int maxFreq);
 
   private:
     char data;
     unsigned int freq;
+    unsigned int maxFreq;
     DictionaryTrieNode* left;
     DictionaryTrieNode* down;
     DictionaryTrieNode* right;

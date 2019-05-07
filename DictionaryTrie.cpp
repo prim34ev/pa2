@@ -63,8 +63,11 @@ std::vector<std::string> DictionaryTrie::predictCompletions(
   if(prefixEnd->isEOS()) {
     this->updateQueue("", prefixEnd->getFrequency());
   }
-
-  this->findCompletions(prefixEnd->nextDown(), "");
+  
+  if(prefixEnd->nextDown() && (this->completions.size() < this->numPredict ||
+               prefixEnd->getMaxFrequency() > this->completions.top().second)) {
+    this->findCompletions(prefixEnd->nextDown(), "");
+  }
 
   std::vector<std::string> fullCompletions;
   while(!this->completions.empty()) {
@@ -121,16 +124,27 @@ DictionaryTrieNode* DictionaryTrie::insert(
 
   if(word[i] < curNode->getChar()) {
     curNode->setLeft(this->insert(word, freq, curNode->getLeft(), i, found));
+    if(curNode->getLeft()->getMaxFrequency() > curNode->getMaxFrequency()) {
+      curNode->setMaxFrequency(curNode->getLeft()->getMaxFrequency());
+    }
   }
   else if(word[i] > curNode->getChar()) {
     curNode->setRight(this->insert(word, freq, curNode->getRight(), i, found));
+    if(curNode->getRight()->getMaxFrequency() > curNode->getMaxFrequency()) {
+      curNode->setMaxFrequency(curNode->getRight()->getMaxFrequency());
+    }
   }
   else if(i + 1 < word.length()) {
     curNode->setNext(this->insert(word, freq, curNode->nextDown(), i + 1, 
                                   found));
+    if(curNode->nextDown()->getMaxFrequency() > curNode->getMaxFrequency()) {
+      curNode->setMaxFrequency(curNode->nextDown()->getMaxFrequency());
+    }
   }
   else if(!(*found = curNode->isEOS())) {
     curNode->makeEOS(freq);
+    if(freq > curNode->getMaxFrequency())
+      curNode->setMaxFrequency(freq);
   }
 
   return curNode;
@@ -157,16 +171,24 @@ DictionaryTrieNode* DictionaryTrie::find(
 
 void DictionaryTrie::findCompletions(
                               DictionaryTrieNode* node, std::string curSuffix) {
-  if(!node) return;
-
-  this->findCompletions(node->getLeft(), curSuffix);
+  if(node->getLeft() && (this->completions.size() < this->numPredict ||
+        node->getLeft()->getMaxFrequency() >= this->completions.top().second)) {
+    this->findCompletions(node->getLeft(), curSuffix);
+  }
 
   if(node->isEOS()) {
     this->updateQueue(curSuffix + node->getChar(), node->getFrequency());
   }
 
-  this->findCompletions(node->nextDown(), curSuffix + node->getChar());
-  this->findCompletions(node->getRight(), curSuffix);
+  if(node->nextDown() && (this->completions.size() < this->numPredict ||
+        node->nextDown()->getMaxFrequency() > this->completions.top().second)) {
+    this->findCompletions(node->nextDown(), curSuffix + node->getChar());
+  }
+
+  if(node->getRight() && (this->completions.size() < this->numPredict ||
+        node->getRight()->getMaxFrequency() > this->completions.top().second)) {
+    this->findCompletions(node->getRight(), curSuffix);
+  }
 }
 
 void DictionaryTrie::updateQueue(std::string suffix, unsigned int freq) {

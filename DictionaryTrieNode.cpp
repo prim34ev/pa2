@@ -10,8 +10,9 @@
 #include "DictionaryTrieNode.hpp"
 
 DictionaryTrieNode::DictionaryTrieNode(char data): data(data), freq(0),
-                                                   left(nullptr), down(nullptr),
-                                                   right(nullptr) {}
+                                                   maxFreq(0), left(nullptr),
+                                                   down(nullptr), right(nullptr)
+                                                                              {}
 
 char DictionaryTrieNode::getChar() const {
   return this->data;
@@ -23,6 +24,10 @@ bool DictionaryTrieNode::isEOS() const {
 
 unsigned int DictionaryTrieNode::getFrequency() const {
   return this->freq;
+}
+
+unsigned int DictionaryTrieNode::getMaxFrequency() const {
+  return this->maxFreq;
 }
 
 DictionaryTrieNode* DictionaryTrieNode::getLeft() const {
@@ -51,4 +56,8 @@ void DictionaryTrieNode::setNext(DictionaryTrieNode* down) {
 
 void DictionaryTrieNode::makeEOS(unsigned int freq) {
   this->freq = freq;
+}
+
+void DictionaryTrieNode::setMaxFrequency(unsigned int maxFreq) {
+  this->maxFreq = maxFreq;
 }
