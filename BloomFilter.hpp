@@ -1,3 +1,10 @@
+/*
+ * Name: Ajay Nair
+ * Email: ajnair@ucsd.edu
+ *
+ * Header file containing BloomFilter classes definition.
+ */
+
 #ifndef BLOOM_FILTER_HPP
 #define BLOOM_FILTER_HPP
 
@@ -43,8 +50,5 @@ class BloomFilter {
     unsigned int hashPJW(const std::string& key);
     unsigned int hashStringBUZ(const std::string& key);
     unsigned int hashBUZ(const unsigned char* key, int keylen);
-
-
-    // TODO: Add your own data and method here
 };
 #endif // BLOOM_FILTER

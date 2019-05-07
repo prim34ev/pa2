@@ -1,3 +1,10 @@
+/*
+ * Name: Ajay Nair
+ * Email: ajnair@ucsd.edu
+ *
+ * Definitions for all of BloomFilter's members
+ */
+
 #include "BloomFilter.hpp"
 
 using namespace std;

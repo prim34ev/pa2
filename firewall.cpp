@@ -1,3 +1,11 @@
+/*
+ * Name: Ajay Nair
+ * Email: ajnair@ucsd.edu
+ *
+ * Program that makes use of BloomFilter to filter malicious URLs out of a list
+ * of URLs in a file
+ */
+
 #include <iostream>
 #include <fstream>
 #include <cmath>
