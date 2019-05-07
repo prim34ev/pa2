@@ -42,7 +42,12 @@ void interact(DictionaryTrie* dict) {
     cout << "Enter a number of completions:" << endl;
     getline(cin, input);
     istringstream(input) >> numCompletions;
-    completions = dict->predictCompletions(prefix, numCompletions);
+    if(prefix.find('_') != string::npos) {
+      completions = dict->predictUnderscore(prefix, numCompletions);
+    }
+    else {
+      completions = dict->predictCompletions(prefix, numCompletions);
+    }
     for(unsigned int i = 0; i < completions.size(); i++) {
       cout << completions[i] << endl;
     }

@@ -11,27 +11,27 @@ using namespace std;
 using std::istream;
 
 class Timer{
-private:
-  std::chrono::time_point<std::chrono::high_resolution_clock> start;
+  private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> start;
 
-public:
+  public:
 
-  /*
-   * Function called when starting the timer.
-   */
-  void begin_timer();
+    /*
+     * Function called when starting the timer.
+     */
+    void begin_timer();
 
-  /*
-   * Function called when ending the timer. Returns duration in nanoseconds
-   * PRECONDITION: begin_timer() must be called before this function
-   */
-  long long end_timer();
+    /*
+     * Function called when ending the timer. Returns duration in nanoseconds
+     * PRECONDITION: begin_timer() must be called before this function
+     */
+    long long end_timer();
 
 
 };
 
 class Utils{
-public:
+  public:
 
     static unsigned int stripFrequency(string& line);
     static std::vector<string> getWordsFromLine(string& line);
@@ -45,8 +45,8 @@ public:
     /*
      * Load num_words from words stream into the dictionary
      */
-    void static load_dict(DictionaryTrie& dict, istream& words, unsigned int num_words);
-
+    void static load_dict(DictionaryTrie& dict, istream& words,
+                          unsigned int num_words);
 
     void static load_dict(vector<string>& dict, istream& words);
 
