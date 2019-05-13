@@ -33,6 +33,7 @@ void interact(DictionaryTrie* dict) {
   string prefix;
   unsigned int numCompletions;
   vector<string> completions;
+  vector<string>::iterator it;
   do {
     cout << "Enter a prefix/pattern to search for:" << endl;
     getline(cin, prefix);
@@ -45,8 +46,8 @@ void interact(DictionaryTrie* dict) {
     else {
       completions = dict->predictCompletions(prefix, numCompletions);
     }
-    for(unsigned int i = 0; i < completions.size(); i++) {
-      cout << completions[i] << endl;
+    for(it = completions.begin(); it != completions.end(); it++) {
+      cout << *it << endl;
     }
     completions.clear();
     cout << "Continue? (y/n)" << endl;
