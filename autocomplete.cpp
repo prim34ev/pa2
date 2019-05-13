@@ -14,20 +14,17 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
+
 using namespace std;
 
-DictionaryTrie* generateDict(string dict_filename) {
-  ifstream in;
-  DictionaryTrie* dictionary_trie = new DictionaryTrie();
-
-  in.open(dict_filename, ios::binary);
+void generateDict(string dict_filename, DictionaryTrie& dictionary_trie) {
+  ifstream in(dict_filename, ios::binary);
 
   cout << "Reading file: " << dict_filename << endl;
-  Utils::load_dict(*dictionary_trie, in);
+  Utils::load_dict(dictionary_trie, in);
 
   in.close();
-
-  return dictionary_trie;
 }
 
 void interact(DictionaryTrie* dict) {
@@ -71,13 +68,15 @@ void interact(DictionaryTrie* dict) {
  */
 int main(int argc, char** argv) {
   if(argc != 2) {
-    cout << "This program needs exactly one argument!" << endl;
-    return 1;
+    cerr << "This program needs exactly one argument!" << endl;
+    return EXIT_FAILURE;
   }
 
-  DictionaryTrie* dict = generateDict(*(argv + 1));
+  DictionaryTrie* dict;
+  generateDict(argv[1], *(dict = new DictionaryTrie()));
   interact(dict);
 
   delete dict;
-  return 0;
+
+  return EXIT_SUCCESS;
 }

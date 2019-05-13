@@ -156,9 +156,9 @@ void testStudent(string dict_filename){
 
 int main(int argc, char *argv[]) {
   if(argc < 2){
-    cout << "Incorrect number of arguments." << endl;
-    cout << "\t First argument: name of dictionary file." << endl;
-    cout << endl;
+    cerr << "Incorrect number of arguments." << endl;
+    cerr << "\t First argument: name of dictionary file." << endl;
+    cerr << endl;
     exit(-1);
   }
 
