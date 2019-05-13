@@ -6,20 +6,19 @@
 #include "DictionaryTrie.hpp"
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
+
 using namespace std;
 
 void testStudent(string dict_filename){
-
-  ifstream in;
-  in.open(dict_filename, ios::binary);
-
+  DictionaryTrie* dictionary_trie;
+  ifstream in(dict_filename, ios::binary);
 
   // Testing student's trie
   cout << "\nTiming your solution" << endl;
   cout << "\nLoading dictionary..." << endl;
-  DictionaryTrie* dictionary_trie = new DictionaryTrie();
 
-  Utils::load_dict(*dictionary_trie, in);
+  Utils::load_dict(*(dictionary_trie = new DictionaryTrie()), in);
 
   cout << "Finished loading dictionary." << endl;
   cout << "\nStarting timing tests for your solution." << endl;
@@ -159,8 +158,10 @@ int main(int argc, char *argv[]) {
     cerr << "Incorrect number of arguments." << endl;
     cerr << "\t First argument: name of dictionary file." << endl;
     cerr << endl;
-    exit(-1);
+    return EXIT_FAILURE;
   }
 
   testStudent(argv[1]);
+
+  return EXIT_SUCCESS;
 }
